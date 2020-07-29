@@ -4,39 +4,24 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
+    <link rel="stylesheet" href="./index.css" />
   </head>
-  <style>
-    html,
-    body {
-      margin: 0;
-      padding: 0;
-    }
-    .container {
-      /* margin: 300px 300px; */
-    }
-    .canvas {
-      width: 800px;
-      height: 800px;
-      border: 1px solid #ccc;
-    }
-  </style>
   <body>
-    <div class="container">
-      <canvas class="canvas"></canvas>
+    <div class="content">
+      <div class="btn startBtn">
+        <button></button>
+      </div>
+      <div class="btn pauseBtn">
+        <button></button>
+      </div>
+
+      <div id="snakeWrap">
+        <!-- <div class="snakeHead"></div>
+        <div class="snakeBody"></div>
+        <div class="food"></div> -->
+      </div>
     </div>
 
-    <script>
-      const canvas = document.querySelector("canvas");
-      const ctx = canvas.getContext("2d");
-
-      // 创建蛇对象
-      let snake = {
-        x: 300,
-        y: 200,
-        length: 1,
-      };
-
-      ctx.fillRect(100, 100, 20, 20);
-    </script>
+    <script src="./index.js"></script>
   </body>
 </html>

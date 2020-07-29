@@ -1,0 +1,71 @@
+.content {
+  width: 640px;
+  height: 640px;
+  margin: 100px auto;
+  position: relative;
+}
+
+.btn {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
+  z-index: 2;
+}
+.btn button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  outline: none;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background-size: contain;
+}
+
+.startBtn button {
+  width: 80px;
+  height: 80px;
+  background-image: url("./assets/kaishi.svg");
+}
+
+.pauseBtn {
+  display: none;
+}
+
+.pauseBtn button {
+  width: 70px;
+  height: 70px;
+  background-image: url("./assets/zanting.svg");
+}
+
+#snakeWrap {
+  width: 600px;
+  height: 600px;
+  background: #225675;
+  border: 20px solid #7dd9ff;
+  position: relative;
+}
+
+#snakeWrap div {
+  width: 20px;
+  height: 20px;
+}
+
+.snakeHead {
+  background-image: url("./assets/tou.svg");
+  background-size: contain;
+}
+
+.snakeBody {
+  background-color: #9ddbb1;
+  border-radius: 50%;
+}
+
+.food {
+  background-image: url("./assets/pingguo.svg");
+  background-size: contain;
+}
