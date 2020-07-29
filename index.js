@@ -15,7 +15,7 @@ window.onload = () => {
     this.parent = document.getElementById("snakeWrap");
   }
 
-  Square.prototype.create = () => {
+  Square.prototype.create = function() {
     this.viewContent.style.position = "absolute";
     this.viewContent.style.width = sw + "px";
     this.viewContent.style.height = sh + "px";
@@ -24,7 +24,7 @@ window.onload = () => {
     this.parent.appendChild(this.viewContent);
   };
 
-  Square.prototype.remove = () => {
+  Square.prototype.remove = function() {
     this.parent.removeChild(this.viewContent);
   };
 
@@ -37,8 +37,9 @@ window.onload = () => {
     this.directionNum = {}; // 蛇方向
   }
 
-  Snake.prototype.init = () => {
+  Snake.prototype.init = function() {
     var snakeHead = new Square(2, 0, "snakeHead");
+    console.log("snakeHead", snakeHead);
     snakeHead.create();
     this.head = snakeHead;
     this.pos.push([2, 0]);
@@ -63,10 +64,11 @@ window.onload = () => {
   };
 
   // 获取下一个位置的元素
-  Snake.prototype.getNextPos = () => {
+  Snake.prototype.getNextPos = function() {
     var nextPos = [this.head];
   };
 
   snake = new Snake();
+  console.log("snae", snake);
   snake.init();
 };
