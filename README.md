@@ -2,19 +2,17 @@
 
 ### 1. 思绪：
 
-(1). 游戏场景搭建
---- 选择 canvas 画布，搭建 2d 场景
+面向对象
 
-(2). 贪吃蛇搭建
---- 身体可以用 1\*1 的小方块组成
+```js
+function Square(x, y, classname) {
+  this.x = sw * x;
+  this.y = sh * y;
+  this.class = classname;
+  this.viewContent = document.createElement("div");
+  this.viewContent.className = this.class;
+  this.parent = document.getElementById("snakeWrap");
+}
 
-(3). 玩家搭建
---- 操控贪吃蛇
-
-(4). 食物
---- 随机生成食物
-
-(5). 游戏规则
---- 蛇不能碰到墙壁
---- 蛇不能碰到自己身体
---- 蛇吃到食物增长身体
+Square.prototype.create = () => {};
+```
