@@ -3,7 +3,9 @@ var sw = 20, //方块长
   tr = 30, // 行
   td = 30; // 列
 
-var snake = null;
+var snake = null,
+  food = null,
+  game = null;
 
 function Square(x, y, classname) {
   this.x = sw * x;
@@ -128,11 +130,47 @@ Snake.prototype.getNextPos = function() {
 };
 
 Snake.prototype.strategies = {
-  move: function() {
-    console.log("move", this);
+  move: function(format) {
+    // format: 需要不需要删除蛇尾, true为吃
+    // 1. 创建一个新身体，放在旧蛇头位置
+    var newBody = new Square(this.head.x / sw, this.head.y / sh, "snakeBody");
+    // 更新链表关系
+    newBody.next = this.head.next;
+    newBody.next.last = newBody;
+    newBody.last = null;
+
+    this.head.remove();
+    newBody.create();
+
+    // 创建新蛇头
+    var newHead = new Square(
+      this.head.x / sw + this.direction.x,
+      this.head.y / sh + this.direction.y,
+      "snakeHead"
+    );
+    // 更新链表关系
+    newHead.next = newBody;
+    newHead.last = null;
+    newBody.last = newHead;
+
+    newHead.create();
+
+    // 更新蛇身体坐标
+    this.pos.unshift([
+      this.head.x / sw + this.direction.x,
+      this.head.y / sh + this.direction.y
+    ]);
+    this.head = newHead;
+
+    if (!format) {
+      // format为false, 表示需要删除
+      this.tail.remove();
+      this.tail = this.tail.last;
+      this.pos.pop();
+    }
   },
   eat: function() {
-    console.log("eat");
+    this.strategies.move.call(this, true);
   },
   die: function() {
     console.log("die");
@@ -142,3 +180,29 @@ Snake.prototype.strategies = {
 snake = new Snake();
 snake.init();
 snake.getNextPos();
+
+// 创建食物
+
+function createFood() {
+  var x = null,
+    y = null,
+    include = true; // 食物坐标在蛇身上
+
+  while (include) {
+    x = Math.round(Math.random() * (td - 1));
+    y = Math.round(Math.random() * (tr - 1));
+
+    snake.pos.forEach(v => {
+      if (v[0] !== x && y !== v[1]) {
+        include = false;
+      }
+    });
+
+    food = new Square(x, y, "food");
+    food.create();
+  }
+}
+
+createFood();
+
+function Game() {}
