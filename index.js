@@ -39,19 +39,23 @@ function Snake() {
     // 蛇方向
     left: {
       x: -1,
-      y: 0
+      y: 0,
+      rotate: 180
     },
     right: {
       x: 1,
-      y: 0
+      y: 0,
+      rotate: 0
     },
     up: {
       x: 0,
-      y: -1
+      y: -1,
+      rotate: -90
     },
     down: {
       x: 0,
-      y: 1
+      y: 1,
+      rotate: 90
     }
   };
 }
@@ -124,6 +128,10 @@ Snake.prototype.getNextPos = function() {
     return;
   }
   // 3. 下个点是苹果， 吃
+  if (food && food.pos[0] === nextPos[0] && food.pos[1] === nextPos[1]) {
+    this.strategies.eat.call(this);
+    return;
+  }
 
   // 4. 下个点什么也不是， 走
   this.strategies.move.call(this);
@@ -153,6 +161,8 @@ Snake.prototype.strategies = {
     newHead.last = null;
     newBody.last = newHead;
 
+    newHead.viewContent.style.transform = `rotate(${this.direction.rotate}deg)`;
+
     newHead.create();
 
     // 更新蛇身体坐标
@@ -171,15 +181,16 @@ Snake.prototype.strategies = {
   },
   eat: function() {
     this.strategies.move.call(this, true);
+    createFood();
+    game.score++;
   },
   die: function() {
     console.log("die");
+    game.over();
   }
 };
 
 snake = new Snake();
-snake.init();
-snake.getNextPos();
 
 // 创建食物
 
@@ -199,10 +210,84 @@ function createFood() {
     });
 
     food = new Square(x, y, "food");
-    food.create();
+    food.pos = [x, y];
+
+    var foodDom = document.querySelector(".food");
+    if (foodDom) {
+      foodDom.style.left = x * sw + "px";
+      foodDom.style.top = y * sh + "px";
+    } else {
+      food.create();
+    }
   }
 }
 
-createFood();
+function Game() {
+  this.timer = null;
+  this.score = 0;
+}
 
-function Game() {}
+Game.prototype.init = function() {
+  snake.init();
+  createFood();
+
+  // snake.getNextPos();
+
+  document.onkeydown = function(ev) {
+    if (ev.which === 37 && snake.direction !== snake.directionNum.right) {
+      // 按下左键，并且不能往右走
+      snake.direction = snake.directionNum.left;
+    } else if (ev.which === 38 && snake.direction !== snake.directionNum.down) {
+      snake.direction = snake.directionNum.up;
+    } else if (ev.which === 39 && snake.direction !== snake.directionNum.left) {
+      snake.direction = snake.directionNum.right;
+    } else if (ev.which === 40 && snake.direction !== snake.directionNum.up) {
+      snake.direction = snake.directionNum.down;
+    }
+  };
+  this.start();
+};
+
+Game.prototype.start = function() {
+  this.timer = setInterval(function() {
+    snake.getNextPos();
+  }, 200);
+};
+
+Game.prototype.pause = function() {
+  clearInterval(this.timer);
+};
+
+Game.prototype.over = function() {
+  clearInterval(this.timer);
+  alert("你的得分为" + this.score);
+  var snakeWrap = document.querySelector("#snakeWrap");
+  snakeWrap.innerHTML = "";
+  snake = new Snake();
+  game = new Game();
+  var startBtnWrap = document.querySelector(".startBtn");
+  startBtnWrap.style.display = "block";
+};
+
+game = new Game();
+var startBtn = document.querySelector(".startBtn button");
+startBtn.addEventListener(
+  "click",
+  function() {
+    startBtn.parentNode.style.display = "none";
+    game.init();
+  },
+  false
+);
+
+var snakeWrap = document.querySelector("#snakeWrap");
+var pauseBtn = document.querySelector(".pauseBtn button");
+snakeWrap.onClick = function() {
+  game.pause();
+  pauseBtn.parentNode.style.display = "block";
+};
+
+pauseBtn.onClick = function() {
+  game.start();
+  pauseBtn.parentNode.style.display = "none";
+};
