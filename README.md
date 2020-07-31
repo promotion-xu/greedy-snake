@@ -16,3 +16,5 @@ function Square(x, y, classname) {
 
 Square.prototype.create = () => {};
 ```
+
+![image](https://github.com/promotion-xu/greedy-snake/edit/master/assets/greed-snake.gif)
